@@ -15,7 +15,7 @@ Use `RuneStringSerializer` class methods `Serialize` and `Deserialize` methods t
 
 |Version|Data format|
 |---|---|
-|1|`Version1.RagnaStringData`|
+|1|`Version1.RuneStringData`|
 
 In case only a single version of the format needs to be supported, a more specific `DeserializeV*` method can be used to skip a runtime check on the deserialized output.
 
