@@ -5,7 +5,12 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RagnaRuneString", "RagnaRunestring\RagnaRuneString.csproj", "{488FC9F0-FF24-4C3B-8841-D04F32C62B2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RagnaRuneStringTest", "RagnaRunestringTest\RagnaRuneStringTest.csproj", "{2E1EF300-E250-402E-861D-37B75C7FD4EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RagnaRuneStringTest", "RagnaRunestringTest\RagnaRuneStringTest.csproj", "{2E1EF300-E250-402E-861D-37B75C7FD4EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{68BF3EE3-6EDC-4B46-809C-583C950A113F}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\dotnet.yml = ..\.github\workflows\dotnet.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
