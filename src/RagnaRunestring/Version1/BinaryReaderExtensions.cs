@@ -3,14 +3,13 @@
     internal static class BinaryReaderExtensions
     {
         /// <summary>
-        /// Varint encodes a rune time multiplied by 1024.
-        /// This specific value was chosen to encode the time value compactly while supporting the threshold of 0.0001 that's used for rune equality comparison.
+        /// Varint encoding a rune time rounded to 4th decimal digit.
         /// </summary>
         /// <param name="reader">reader</param>
         /// <returns>Rune time value</returns>
         internal static double ReadRuneTime(this BinaryReader reader)
         {
-            return reader.Read7BitEncodedInt() / 1024.0;
+            return reader.Read7BitEncodedInt() / 10000.0;
         }
 
         /// <summary>
@@ -51,7 +50,7 @@
         internal static int[] ReadDoubleRuneColumns(this BinaryReader reader, int lengthDouble)
         {
             var doubleColumnBytes = (lengthDouble + 7) / 8;
-            return Enumerable.Range(0, 3 * ((doubleColumnBytes + 2) / 3))
+            return Enumerable.Range(0, (doubleColumnBytes + 2) / 3)
                 .SelectMany(_ => reader.ReadDoubleRuneColumn3Byte())
                 .ToArray();
         }
@@ -123,7 +122,7 @@
         /// Read a block containing all the information needed to construct a BPM change object.
         /// </summary>
         /// <remarks>
-        /// It just so happens that for both values 1024 provides good enough accuracy, so we reuse <see cref="ReadRuneTime(BinaryReader)"/>.
+        /// It just so happens that for both values 4 decimal places provide good enough accuracy, so we reuse <see cref="ReadRuneTime(BinaryReader)"/>.
         /// </remarks>
         /// <param name="reader">reader</param>
         internal static BPMChange ReadBPMChange(this BinaryReader reader)

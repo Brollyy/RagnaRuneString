@@ -5,16 +5,8 @@
         private static readonly DoubleApproxEqualComparer SINGLETON = new();
 
         public static bool ApproxEquals(double x, double y) => SINGLETON.Equals(x, y);
-
-        public bool Equals(double x, double y)
-        {
-            return Math.Abs(x - y) <= 0.0001;
-        }
-
-        public int GetHashCode(double obj)
-        {
-            return double.Round(obj, 3).GetHashCode(); // We need this rounding to make sure all close-enough values will fall into the same bucket.
-        }
+        public bool Equals(double x, double y) => Math.Round(x, 4) == Math.Round(y, 4);
+        public int GetHashCode(double obj) => double.Round(obj, 4).GetHashCode();
     }
 
     internal class DoubleApproxComparer : IComparer<double>
@@ -23,10 +15,6 @@
 
         public static int ApproxCompare(double x, double y) => SINGLETON.Compare(x, y);
 
-        public int Compare(double x, double y)
-        {
-            if (Math.Abs(x - y) <= 0.0001) return 0;
-            return x < y ? -1 : 1;
-        }
+        public int Compare(double x, double y) => double.Round(x, 4).CompareTo(double.Round(y, 4));
     }
 }

@@ -188,6 +188,10 @@ namespace RagnaRuneString.Version1
         public override readonly bool Equals(object? obj) => obj is RuneStringData other && Equals(other);
         public override readonly int GetHashCode() => HashCode.Combine(runes, bpmChanges);
 
-        public override readonly string ToString() => $"RuneStringData(runes={runes}, bpmChanges={bpmChanges})";
+        public override readonly string ToString() => $"RuneStringData(runes=SortedSet<Rune>[{runes.Count}], bpmChanges=SortedSet<BPMChange>[{bpmChanges.Count}])";
+
+        public static bool operator ==(RuneStringData left, RuneStringData right) => left.Equals(right);
+
+        public static bool operator !=(RuneStringData left, RuneStringData right) => !(left == right);
     }
 }

@@ -30,7 +30,7 @@ namespace RagnaRuneString.Version1
 
         public readonly bool Equals(Rune other) => DoubleApproxEqualComparer.ApproxEquals(time, other.time) && lineIndex == other.lineIndex;
         public override readonly bool Equals(object? obj) => obj is Rune other && Equals(other);
-        public override readonly int GetHashCode() => HashCode.Combine(double.Round(time), lineIndex);
+        public override readonly int GetHashCode() => HashCode.Combine(double.Round(time, 4), lineIndex);
         public static bool operator ==(Rune left, Rune right) => left.Equals(right);
         public static bool operator !=(Rune left, Rune right) => !(left == right);
         public static bool operator <(Rune left, Rune right) => left.CompareTo(right) < 0;

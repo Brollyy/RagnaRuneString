@@ -3,14 +3,13 @@
     internal static class BinaryWriterExtensions
     {
         /// <summary>
-        /// Varint encodes a rune time multiplied by 1024.
-        /// This specific value was chosen to encode the time value compactly while supporting the threshold of 0.0001 that's used for rune equality comparison.
+        /// Varint encoding a rune time rounded to 4th decimal digit.
         /// </summary>
         /// <param name="writer">writer</param>
         /// <param name="time">time</param>
         internal static void WriteRuneTime(this BinaryWriter writer, double time)
         {
-            writer.Write7BitEncodedInt((int)(time * 1024));
+            writer.Write7BitEncodedInt((int)double.Round(time * 10000.0));
         }
 
         /// <summary>
@@ -136,7 +135,7 @@
         /// Write a block containing all the information needed to construct a BPM change object.
         /// </summary>
         /// <remarks>
-        /// It just so happens that for both values 1024 provides good enough accuracy, so we reuse <see cref="WriteRuneTime(BinaryWriter, double)"/>.
+        /// It just so happens that for both values 4 decimal places provide good enough accuracy, so we reuse <see cref="WriteRuneTime(BinaryWriter, double)"/>.
         /// </remarks>
         /// <param name="bpmChange">BPM change</param>
         internal static void WriteBPMChange(this BinaryWriter writer, BPMChange bpmChange)

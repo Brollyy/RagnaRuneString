@@ -42,7 +42,7 @@ Runes are encoded in three sections depending on the number of runes in the same
 2. Double rune section.
 3. N runes in a row section.
 
-Each section begins with a leading varint specifying the number of rows in that section. Row timing is encoded as varint of the original rune time multiplied by 1024 and rounded down - this is a lossy transformation, although the error is unnoticeable for all intents and purposes.
+Each section begins with a leading varint specifying the number of rows in that section. Row timing is encoded as varint of the original rune time multiplied by 10000 and rounded to the nearest integer - this is a lossy transformation that ensures that the first 4 decimal digits will always match with the original timing when rounded.
 
 ##### Single rune section
 
@@ -58,7 +58,7 @@ Example with `-` indicating major gridline and `*` indicating a rune:
 ----   <-- time = 0.0
 ```
 This pattern gets encoded to single note section in hex as
-`04__8002_8004_8006_8008__1B`, with the first byte `04` encoding the count of 4 single runes, `8002`, `8004`, `8006` and `8008` varints encoding the row timings `0.25`, `0.5`, `0.75` and `1.0`, and finally the byte `1B` (or in binary `00_01_10_11`) encoding column values `0`, `1`, `2` and `3`.
+`04__C413_8827_CC3A_904E__1B`, with the first byte `04` encoding the count of 4 single runes, `C413`, `8827`, `CC3A` and `904E` varints encoding the row timings `0.25`, `0.5`, `0.75` and `1.0`, and finally the byte `1B` (or in binary `00_01_10_11`) encoding column values `0`, `1`, `2` and `3`.
 
 ##### Double rune section
 
@@ -85,7 +85,7 @@ Example with `-` indicating major gridline and `*` indicating a rune:
 ----   <-- time = 0.0
 ```
 This pattern gets encoded to double note section in hex as
-`04__8002_8004_8006_8008__4CC000`, with the first byte `04` encoding the count of 4 double runes, `8002`, `8004`, `8006` and `8008` varints encoding the row timings `0.25`, `0.5`, `0.75` and `1.0`, and finally 3 bytes `4C C0 00` (or in binary `010_011_001_100__000000000000`) encoding column combination values `2`, `3`, `1` and `4`, followed by 12 bits of padding.
+`04__C413_8827_CC3A_904E__4CC000`, with the first byte `04` encoding the count of 4 double runes, `C413`, `8827`, `CC3A` and `904E` varints encoding the row timings `0.25`, `0.5`, `0.75` and `1.0`, and finally 3 bytes `4C C0 00` (or in binary `010_011_001_100__000000000000`) encoding column combination values `2`, `3`, `1` and `4`, followed by 12 bits of padding.
 
 ##### N-rune section
 
