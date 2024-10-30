@@ -15,21 +15,45 @@ namespace RagnaRuneStringTest.Version1
             get
             {
                 var random = new Random();
-                return Enumerable.Range(0, 1000).Select(_ => new object[] { RandomRuneStringData(random) });
+                return Enumerable.Range(0, 1000).Select(_ => { var seed = random.Next(); return new object[] { seed, RandomRuneStringData(seed) }; });
             }
         }
 
-        private static RuneStringData RandomRuneStringData(Random random)
+        private static RuneStringData RandomRuneStringData(int seed)
         {
+            var random = new Random(seed);
+            // Totally random runes have very small chance to generate double or triple runes, so we force a percentage of all the runes to be of certain type.
+            var totalRuneCount = random.Next(1000);
+            var doubleRuneCount = totalRuneCount / (2 * 20);   // 5% of runes are double runes
+            var tripleRuneCount = totalRuneCount / (3 * 200); // 0.5% of runes are triple runes
+            var singleRuneCount = totalRuneCount - 2 * doubleRuneCount - 3 * tripleRuneCount;
             return new RuneStringData(
-                runes: Enumerable.Range(0, random.Next(1000)).Select(_ => new Rune(random.NextDouble() * 1000, random.Next(4))),
+                runes: [
+                    ..Enumerable.Range(0, singleRuneCount).Select(_ => RandomRune(random)),
+                    ..Enumerable.Range(0, doubleRuneCount).SelectMany(_ => RandomNRune(random, 2)),
+                    ..Enumerable.Range(0, tripleRuneCount).SelectMany(_ => RandomNRune(random, 3))
+                ],
                 bpmChanges: Enumerable.Range(0, random.Next(100)).Select(_ => new BPMChange(random.NextDouble() * 300, random.NextDouble() * 1000))
             );
         }
 
+        private static Rune RandomRune(Random random) => new(random.NextDouble() * 1000, random.Next(4));
+
+        private static List<Rune> RandomNRune(Random random, int n)
+        {
+            List<Rune> result = [RandomRune(random)];
+            while (result.Count < n)
+            {
+                var rune = RandomRune(random);
+                rune.time = result[0].time;
+                if (rune != result[0]) result.Add(rune);
+            }
+            return result;
+        }
+
         [TestMethod]
         [DynamicData("TestData")]
-        public void IdempotencyTest(RuneStringData inputData)
+        public void IdempotencyTest(int seed, RuneStringData inputData)
         {
             var outputData = RuneStringSerializer.DeserializeV1(RuneStringSerializer.Serialize(inputData, RagnaRuneString.Version.VERSION_1));
 
@@ -54,5 +78,10 @@ namespace RagnaRuneStringTest.Version1
                 i++;
             }
         }
+
+        // Utility test for reproducing and debugging specific failing seeds.
+        //[TestMethod]
+        //[DataRow(1000103267)]
+        public void SeededIdempotencyTest(int seed) => IdempotencyTest(seed, RandomRuneStringData(seed));
     }
 }

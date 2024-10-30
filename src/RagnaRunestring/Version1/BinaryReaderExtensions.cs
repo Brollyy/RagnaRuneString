@@ -49,8 +49,8 @@
         /// <returns>All rune column values</returns>
         internal static int[] ReadDoubleRuneColumns(this BinaryReader reader, int lengthDouble)
         {
-            var doubleColumnBytes = (lengthDouble + 7) / 8;
-            return Enumerable.Range(0, (doubleColumnBytes + 2) / 3)
+            var doubleColumn3Bytes = (lengthDouble + 7) / 8;
+            return Enumerable.Range(0, doubleColumn3Bytes)
                 .SelectMany(_ => reader.ReadDoubleRuneColumn3Byte())
                 .ToArray();
         }
@@ -61,7 +61,7 @@
         /// In total, 3 bytes of double rune column data provide column values for 16 rune objects.
         /// </summary>
         /// <param name="reader">reader</param>
-        /// <returns>4 rune column values</returns>
+        /// <returns>16 rune column values</returns>
         internal static IEnumerable<int> ReadDoubleRuneColumn3Byte(this BinaryReader reader)
         {
             var colByte = new byte[] { reader.ReadByte(), reader.ReadByte(), reader.ReadByte() };
@@ -70,7 +70,7 @@
                 (colByte[0] >> 2) & 7,                              // ___xxx__ ________ ________
                 ((colByte[0] & 3) << 1) | (colByte[1] >> 7),        // ______xx x_______ ________
                 (colByte[1] >> 4) & 7,                              // ________ _xxx____ ________
-                (colByte[1] >> 7) & 7,                              // ________ ____xxx_ ________
+                (colByte[1] >> 1) & 7,                              // ________ ____xxx_ ________
                 ((colByte[1] & 1) << 2) | (colByte[2] >> 6),        // ________ _______x xx______
                 (colByte[2] >> 3) & 7,                              // ________ ________ __xxx___
                 colByte[2] & 7,                                     // ________ ________ _____xxx
