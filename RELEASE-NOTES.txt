@@ -1,0 +1,10 @@
+1.0.2
+- Fixed more bugs with deserialization code.
+
+1.0.1
+- Fixed a bug in deserialization code that caused it to read too many bytes when parsing double runes section.
+- BREAKING CHANGE: changed the encoding of row timing to avoid issues with deserialized runes not being close enough to the original input.
+- Added missing deserialization tests and idempotency tests for version 1.
+
+1.0.0
+- Implemented version 1 of the RagnaRuneString format.

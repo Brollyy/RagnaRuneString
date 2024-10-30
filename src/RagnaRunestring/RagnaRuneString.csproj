@@ -12,13 +12,8 @@
     <RepositoryUrl>https://github.com/Brollyy/RagnaRuneString</RepositoryUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <Description>Small util package for serializing and deserializing Ragnarock runes into a compact string format.</Description>
-    <PackageReleaseNotes>
-      1.0.1
-      - Fixed a bug in deserialization code that caused it to read too many bytes when parsing double runes section.
-      - BREAKING CHANGE: changed the encoding of row timing to avoid issues with deserialized runes not being close enough to the original input.
-      - Added missing deserialization tests and idempotency tests for version 1.
-    </PackageReleaseNotes>
-    <Version>1.0.1</Version>
+    <!-- PackageReleaseNotes dynamically populated from RELEASE-NOTES.txt -->
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
