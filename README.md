@@ -109,4 +109,4 @@ BPM changes are encoded as an array, starting with a varint specifying number of
 Although BPM changes are not required to describe timing of runes, they might be useful to consumers for context (e.g. visualization of patterns), so it's still recommended to include them in the rune string.
 Only include BPM changes that are relevant to the encoded runes.
 
-Global BPM for a rune string can be specified as a BPM change with start time equal to 0.
+Global BPM for a rune string can be specified as a BPM change with start time equal to -1.
